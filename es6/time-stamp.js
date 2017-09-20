@@ -30,6 +30,13 @@ export default (Model, bootOptions = {}) => {
           validation is turned on and time stamps are required`);
   }
 
+  // Get fields' name base on connectorType
+  const def = Model.definition;
+  const conn = Model.getConnector();
+
+  options.createdAt = def.columnName(conn.name, options.createdAt);
+  options.updatedAt = def.columnName(conn.name, options.updatedAt);
+
   Model.defineProperty(options.createdAt, {
     type: Date,
     required: options.required,
